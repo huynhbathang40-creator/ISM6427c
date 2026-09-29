@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Boca Weather</title>
+  <meta name="description" content="Live weather for Boca Raton and beyond, powered by Open-Meteo." />
+  <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>" />
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">⛅</span>
+      <span class="brand-name">Boca Weather</span>
+    </div>
+    <div class="theme-switch" role="radiogroup" aria-label="Theme">
+      <button type="button" role="radio" data-theme-choice="light" aria-checked="false" title="Light theme">
+        <span aria-hidden="true">☀️</span><span class="label">Light</span>
+      </button>
+      <button type="button" role="radio" data-theme-choice="dark" aria-checked="false" title="Dark theme">
+        <span aria-hidden="true">🌙</span><span class="label">Dark</span>
+      </button>
+      <button type="button" role="radio" data-theme-choice="system" aria-checked="true" title="Match system">
+        <span aria-hidden="true">💻</span><span class="label">System</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="greeting" aria-live="polite">
+      <h1 id="greeting">Welcome, Viktor Huynh</h1>
+      <p id="greeting-sub" class="muted">Here's the latest weather for you.</p>
+    </section>
+
+    <section class="controls">
+      <form id="search-form" class="search" role="search" autocomplete="off">
+        <label for="search-input" class="sr-only">Search for a city</label>
+        <input id="search-input" type="search" placeholder="Search a city…" aria-autocomplete="list" aria-controls="search-results" />
+        <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+      </form>
+      <div class="control-buttons">
+        <button type="button" id="locate-btn" class="btn" title="Use my location">📍 <span class="label">My location</span></button>
+        <button type="button" id="home-btn" class="btn" title="Back to Boca Raton (FAU)">🏠 <span class="label">Boca</span></button>
+        <button type="button" id="unit-btn" class="btn" title="Toggle units">°F</button>
+      </div>
+    </section>
+
+    <div id="status" class="status" role="status" hidden></div>
+
+    <section id="current" class="card current" aria-labelledby="location-name">
+      <div class="current-head">
+        <div>
+          <h2 id="location-name">Boca Raton, Florida</h2>
+          <p id="updated" class="muted small">Loading…</p>
+        </div>
+        <div id="current-icon" class="current-icon" aria-hidden="true">⛅</div>
+      </div>
+      <div class="current-main">
+        <div id="current-temp" class="current-temp">--°</div>
+        <div>
+          <div id="current-desc" class="current-desc">—</div>
+          <div id="current-feels" class="muted">Feels like --°</div>
+          <div id="current-hilo" class="muted">H --° · L --°</div>
+        </div>
+      </div>
+      <dl class="metrics">
+        <div><dt>Humidity</dt><dd id="m-humidity">--</dd></div>
+        <div><dt>Wind</dt><dd id="m-wind">--</dd></div>
+        <div><dt>Rain chance</dt><dd id="m-precip">--</dd></div>
+        <div><dt>UV index</dt><dd id="m-uv">--</dd></div>
+        <div><dt>Pressure</dt><dd id="m-pressure">--</dd></div>
+        <div><dt>Sunrise / Sunset</dt><dd id="m-sun">--</dd></div>
+      </dl>
+    </section>
+
+    <section id="daily-card" class="card">
+      <h3>7-day forecast</h3>
+      <ul id="daily" class="daily"></ul>
+    </section>
+    <section id="hourly-card" class="card">
+      <h3>Next 24 hours</h3>
+      <div id="hourly" class="hourly" tabindex="0" aria-label="Hourly forecast"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer muted small">
+    Live data from <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · Default location: Florida Atlantic University, Boca Raton
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
